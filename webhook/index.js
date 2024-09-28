@@ -1,20 +1,21 @@
 const express = require('express')
 const app = express()
 const mongoose = require("mongoose");
-const PORT = process.env.WH_HOOK | 3000
-
+const PORT = process.env.WH_HOOK || 3000
+const DB = process.env.MONGODB_URL || "mongodb://root:example@mongo:27017"
 const Schema = mongoose.Schema;
    
 const requestSchema = new Schema({
-    headers: Array,
+    url:String,
+    headers: Object,
     ip: String,
     method: String,
     params: String,
-    cookies:Array,
+    cookies:Object,
     protocol:String,
-    body:String,
-    query:String
-
+    body:Object,
+    query:Object,
+    date: { type: Date, default: Date.now },
 });
  
 const Request = mongoose.model("Request", requestSchema);
@@ -24,8 +25,9 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/gotcha*', async (req,res)=>{
     let obj=Object()
+    obj.url =req.protocol+'://' + req.get('uri') +req.originalUrl
     obj.headers = req.headers
-    obj.params = req.params
+    obj.params = req.params[0]
     obj.protocol = req.protocol
     obj.cookies = req.headers?.cookie?.split('; ').reduce((prev, current) => {
         const [name, ...value] = current.split('=');
@@ -37,21 +39,23 @@ app.use('/gotcha*', async (req,res)=>{
     obj.query = req.query
     obj.method = req.method
     const request = new Request(obj)
-    await user.save();
+    await request.save();
+    console.log(request)
     return res.send(obj)
 })
 
 app.get('/history', async(req,res)=>{
-    const requests = await Request.find({})
-    return res.send()
+    const requests = await Request.find({}).sort({'date': -1})
+    return res.send(requests)
 })
  
 async function main() {
  
     try{
-        await mongoose.connect("mongodb://mongo:27017/requests");
+        console.log(DB)
+        await mongoose.connect("mongodb://root:example@mongo:27017");
         app.listen(PORT);
-        console.log("Сервер ожидает подключения...");
+        console.log("Сервер ожидает подключения..."+PORT);
     }
     catch(err) {
         return console.log(err);

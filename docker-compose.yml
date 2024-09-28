@@ -4,35 +4,28 @@ services:
       context: ./webhook
     ports:
       - 3000:3000
-    env_file: .env
-  # db:
-  #   image: postgres
-  #   restart: always
-  #   volumes:
-  #     - ./db_data:/docker-entrypoint-initdb.d
-  #   environment:
-  #     - POSTGRES_USER=${DB_USER}
-  #     - POSTGRES_PASSWORD=${DB_PASSWORD}
-  #   ports:
-  #     - 5432:5432
-  #   healthcheck:
-  #     test: [ "CMD", "pg_isready", "-U", "${DB_USER}" ]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
+    depends_on:
+      - mongo
   mongo:
     image: mongo
+    restart: always
     ports:
       - 27017:27017
     environment:
-      - MONGO_INITDB_DATABASE=requests
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=adminqwe
-    # volumes:
-    #   # seeding scripts
-    #   - ./mongo-entrypoint:/docker-entrypoint-initdb.d
-    #   - mongodb:/data/db
-    #   - mongoconfig:/data/configdb
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    volumes:
+      - mongo_data:/data/db
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+      ME_CONFIG_BASICAUTH: false
   nginx:
     container_name: proxy_nginx
     depends_on:
@@ -41,9 +34,9 @@ services:
     image: nginx:latest
     ports:
       - '80:80'
-    env_file:
-      - .env
     volumes:
       - ./nginx:/etc/nginx/conf.d
     restart: always
 
+volumes:
+  mongo_data:
