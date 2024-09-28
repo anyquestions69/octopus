@@ -19,17 +19,18 @@ const requestSchema = new Schema({
 });
  
 const Request = mongoose.model("Request", requestSchema);
-
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use()
-
-app.get('/history', async(req,res)=>{
-    const requests = await Request.find({}).sort({'date': -1})
-    return res.send(requests)
-})
  
-
+app.set("view engine", "hbs");
+app.set("views", __dirname + "/static"); 
+app.use("/", function(_, response){
+     
+    response.render("contact.hbs", {
+        title: "Мои контакты",
+        email: "gavgav@mycorp.com",
+        phone: "+1234567890"
+    });
+});
+app.listen(3000);
 async function main() {
  
     try{
