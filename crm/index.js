@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const mongoose = require("mongoose");
-const PORT = process.env.WH_HOOK | 3000
+const PORT = process.env.WH_HOOK | 31337
 
 const Schema = mongoose.Schema;
    
@@ -22,19 +22,18 @@ const Request = mongoose.model("Request", requestSchema);
  
 app.set("view engine", "hbs");
 app.set("views", __dirname + "/static"); 
-app.use("/", function(_, response){
-     
-    response.render("contact.hbs", {
-        title: "Мои контакты",
-        email: "gavgav@mycorp.com",
-        phone: "+1234567890"
+
+app.use("/", async function(_, response){
+    const requests = await Request.find({}).sort({'date': -1})
+    return response.render("index.hbs", {
+       
     });
 });
-app.listen(3000);
+
 async function main() {
  
     try{
-        await mongoose.connect("mongodb://root:example@mondo:27017");
+        await mongoose.connect("mongodb://root:example@localhost:27017");
         app.listen(PORT);
         console.log("Сервер ожидает подключения...");
     }
