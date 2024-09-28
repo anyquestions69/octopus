@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - ./db_data:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "${DB_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  nginx:
+    container_name: proxy_nginx
+    depends_on:
+      - server
+      - db
+    image: nginx:latest
+    ports:
+      - '80:80'
+    env_file:
+      - .env
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    restart: always
+
