@@ -1,5 +1,78 @@
-<ul class="people_list">
-  {{#each people}}
-    <li>{{this}}</li>
-  {{/each}}
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="/static/dist/css/bootstrap-select.css" />
+    <link rel="stylesheet" href="/static/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/dist/css/bootstrap-grid.css" >
+       <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<link rel="stylesheet" href="/static/dist/css/bootstrap-select.css" />
+    
+    <title>Главная</title>
+   
+</head>
+<body class="" >
+
+    <div class="container bg-primary-subtle"> 
+      <div class="row">
+      <div class="col-1">URI</div>
+      <div class="col-1">Date</div>
+      <div class="col-2">Cookies</div>
+      <div class="col-2">Headers</div>
+    <div class="col-1">IP</div>
+    <div class="col-1">Method</div>
+    <div class="col-1">Body</div>
+    <div class="col-1">Query</div>
+    <div class="col-1">Params</div>
+    <div class="col-1">Protocol</div>
+    </div>
+   
+    {{#each requests as | r |}}
+    <div class="row">
+    <div class="col-1">{{url}}</div>
+    <div class="col-1">{{date}}</div>
+     <div><ul>{{#each cookies}}
+        <li>{{@key}} : {{this}}</li>
+        {{/each}}</ul>
+    </div>
+    <div><ul>{{#each headers}}
+        <li>{{@key}} : {{this}}</li>
+        {{/each}}</ul>
+    </div>
+    <div class="col-1">{{ip}}</div>
+    <div class="col-1">{{method}}</div>
+    <div class="col-1"><ul>{{#each body}}
+        <li>{{@key}} : {{this}}</li>
+        {{/each}}</ul></div>
+    <div class="col-1"><ul>{{#each query}}
+        <li>{{@key}} : {{this}}</li>
+        {{/each}}</ul></div>
+        <div>{{params}}</div>
+        <div>{{protocol}}</div>
+  </div>
+       
+    {{/each}}
+   
+  
 </ul>
+      </div>
+      
+        
+         
+              
+              
+                  </div>
+
+
+<script type="text/javascript">
+
+
+</script>
+                 
+</body>
+</html>

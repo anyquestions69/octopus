@@ -26,7 +26,7 @@ app.set("views", __dirname + "/static");
 app.use("/", async function(_, response){
     const requests = await Request.find({}).sort({'date': -1})
     return response.render("index.hbs", {
-       
+       requests
     });
 });
 

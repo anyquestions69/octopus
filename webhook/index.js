@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/gotcha*', async (req,res)=>{
     let obj=Object()
-    obj.url =req.protocol+'://' + req.get('uri') +req.originalUrl
+    obj.url =req.protocol+'://' + +req.get('host')+ req.get('uri') +req.originalUrl
     obj.headers = req.headers
     obj.params = req.params[0]
     obj.protocol = req.protocol
