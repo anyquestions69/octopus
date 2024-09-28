@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 RUN npm i --force
-EXPOSE 8048
+EXPOSE 1337
 
 # Command to run the application
 CMD ["npm", "run", "start"]

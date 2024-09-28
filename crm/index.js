@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const mongoose = require("mongoose");
 const PORT = process.env.WH_HOOK | 31337
-
+const hbs = require("hbs");
 const Schema = mongoose.Schema;
    
 const requestSchema = new Schema({
@@ -22,6 +22,9 @@ const Request = mongoose.model("Request", requestSchema);
  
 app.set("view engine", "hbs");
 app.set("views", __dirname + "/static"); 
+hbs.registerHelper('tz', function (date) {
+    return date.toLocaleTimeString()
+})
 
 app.use("/", async function(_, response){
     const requests = await Request.find({}).sort({'date': -1})
@@ -33,7 +36,7 @@ app.use("/", async function(_, response){
 async function main() {
  
     try{
-        await mongoose.connect("mongodb://root:example@localhost:27017");
+        await mongoose.connect("mongodb://root:example@mongo:27017");
         app.listen(PORT);
         console.log("Сервер ожидает подключения...");
     }
