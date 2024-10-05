@@ -42,8 +42,11 @@ services:
     image: nginx:latest
     ports:
       - '80:80'
+    env_file:
+      - .env
     volumes:
       - ./nginx:/etc/nginx/conf.d
+      - ./xxe:/var/www/xxe
     restart: always
 
 volumes:
